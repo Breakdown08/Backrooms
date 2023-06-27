@@ -14,6 +14,7 @@ public class Generation : MonoBehaviour
     public GameObject coorridor_prefab;
     public GameObject room_prefab;
     public GameObject ceiling_prefab;
+    public GameObject lamp_prefab;
     public GameObject Level;
     private const string destPathFloor = "/Level/Floor";
     private const string destPathCeiling = "/Level/Ceiling";
@@ -62,23 +63,31 @@ public class Generation : MonoBehaviour
 
     private void Build_area()
     {
+        GameObject ceiling;
+        int i = 0;
         Clean_dublicates();
         foreach (Coordinate coord in coordinates)
         {
+            i++;
             if (coord.tag == "corridor")
             {
                 GameObject plane = Instantiate(coorridor_prefab, coord.position, Quaternion.identity) as GameObject;
                 plane.transform.SetParent(transform.Find(destPathFloor), false);
-                GameObject ceiling = Instantiate(ceiling_prefab, coord.position + new Vector3(0f, 2.8f, 0f), Quaternion.identity) as GameObject;
-                ceiling.transform.SetParent(transform.Find(destPathCeiling), false);
             }
             if (coord.tag == "room")
             {
                 GameObject plane = Instantiate(room_prefab, coord.position, Quaternion.identity) as GameObject;
                 plane.transform.SetParent(transform.Find(destPathFloor), false);
-                GameObject ceiling = Instantiate(ceiling_prefab, coord.position + new Vector3(0f, 2.8f, 0f), Quaternion.identity) as GameObject;
-                ceiling.transform.SetParent(transform.Find(destPathCeiling), false);
             }
+            if (i % 2 == 0)
+            {
+                ceiling = Instantiate(lamp_prefab, coord.position + new Vector3(0f, 2.8f, 0f), Quaternion.identity) as GameObject;
+            }
+            else 
+            {
+                ceiling = Instantiate(ceiling_prefab, coord.position + new Vector3(0f, 2.8f, 0f), Quaternion.identity) as GameObject;
+            }
+            ceiling.transform.SetParent(transform.Find(destPathCeiling), false);
         }
     }
 
@@ -141,6 +150,8 @@ public class Generation : MonoBehaviour
         Corridors.Generate();
         //BuildVoid.Build_Void();
         Build_area();
+        Debug.Log(coordinates[0].position);
+        Debug.Log(coordinates[coordinates.Count - 1].position);
     }
 
     private void Update()
