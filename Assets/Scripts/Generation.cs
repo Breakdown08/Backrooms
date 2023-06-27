@@ -15,11 +15,33 @@ public class Generation : MonoBehaviour
     public GameObject room_prefab;
     public GameObject ceiling_prefab;
     public GameObject lamp_prefab;
+    public GameObject end_prefab;
     public GameObject Level;
     private const string destPathFloor = "/Level/Floor";
     private const string destPathCeiling = "/Level/Ceiling";
     public List<Coordinate> coordinates = new List<Coordinate>();
+    Vector3 endPosition;
 
+
+
+    public void FindEndPosition()
+    {
+        Vector3 startPosition = coordinates[0].position;
+        float farthestDistance = 0f;
+        Coordinate farthestCoordinate = coordinates[0];
+        for (int i = 1; i < coordinates.Count; i++)
+        {
+            Coordinate coord = coordinates[i];
+            float distance = Vector3.Distance(startPosition, coord.position);
+
+            if (distance > farthestDistance)
+            {
+                farthestDistance = distance;
+                farthestCoordinate = coord;
+            }
+        }
+        farthestCoordinate.tag = "end";
+    }
 
     private void Awake()
     {
@@ -54,10 +76,10 @@ public class Generation : MonoBehaviour
 
     public static void ClearLog()
     {
-        Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
-        Type type = assembly.GetType("UnityEditor.LogEntries");
-        MethodInfo method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
+        //Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
+        //Type type = assembly.GetType("UnityEditor.LogEntries");
+        //MethodInfo method = type.GetMethod("Clear");
+        //method.Invoke(new object(), null);
 
     }
 
@@ -66,6 +88,7 @@ public class Generation : MonoBehaviour
         GameObject ceiling;
         int i = 0;
         Clean_dublicates();
+        FindEndPosition();
         foreach (Coordinate coord in coordinates)
         {
             i++;
@@ -79,6 +102,11 @@ public class Generation : MonoBehaviour
                 GameObject plane = Instantiate(room_prefab, coord.position, Quaternion.identity) as GameObject;
                 plane.transform.SetParent(transform.Find(destPathFloor), false);
             }
+            if (coord.tag == "end")
+            {
+                GameObject plane = Instantiate(end_prefab, coord.position, Quaternion.identity) as GameObject;
+                plane.transform.SetParent(transform.Find(destPathFloor), false);
+            }
             if (i % 2 == 0)
             {
                 ceiling = Instantiate(lamp_prefab, coord.position + new Vector3(0f, 2.8f, 0f), Quaternion.identity) as GameObject;
@@ -88,7 +116,7 @@ public class Generation : MonoBehaviour
                 ceiling = Instantiate(ceiling_prefab, coord.position + new Vector3(0f, 2.8f, 0f), Quaternion.identity) as GameObject;
             }
             ceiling.transform.SetParent(transform.Find(destPathCeiling), false);
-        }
+        } 
     }
 
     private void Clean_dublicates()
@@ -150,8 +178,6 @@ public class Generation : MonoBehaviour
         Corridors.Generate();
         //BuildVoid.Build_Void();
         Build_area();
-        Debug.Log(coordinates[0].position);
-        Debug.Log(coordinates[coordinates.Count - 1].position);
     }
 
     private void Update()

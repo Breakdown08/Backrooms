@@ -13,8 +13,9 @@ public class Interface : MonoBehaviour
     [Header("Интерфейс (поражение)")] public GameObject gameOver;
     [Header("Интерфейс (победа)")] public GameObject victory;
     [Header("Интерфейс (здоровье)")] public List<GameObject> healthbar = new List<GameObject>();
-    [Header("Интерфейс (патроны игрока)")] public Text ammo;
-    [Header("Интерфейс (уничтожено врагов)")] public Text killed;
+    [Header("Интерфейс (время)")] public Text time;
+    [Header("Интерфейс (осталось светильников)")] public Text ammo;
+    bool firstStart;
     private void Awake()
     {
         Instance = this;

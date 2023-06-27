@@ -12,6 +12,8 @@ public class MovePlayer : MonoBehaviour
     private float rotationX, rotationY;
     private Rigidbody rb;
     private bool contactIsNormal = true;
+    float currentTime = 0f;
+    float startingTime = Settings.maxTime;
 
 
     private void Awake()
@@ -22,7 +24,7 @@ public class MovePlayer : MonoBehaviour
 
     void Start()
     {
-        
+        currentTime = startingTime;
     }
     
     void Update()
@@ -46,12 +48,15 @@ public class MovePlayer : MonoBehaviour
                 contactIsNormal = false;
                 rb.AddForce(Vector3.up * Settings.forceJump, ForceMode.Impulse);
             }
-            
-            if (Input.GetKey(KeyCode.F))
-            {
-                Debug.Log(contactIsNormal.ToString());
-            }
         }
+
+        if (currentTime <= 0)
+        {
+            Interface.Instance.menu.SetActive(true);
+            Interface.Instance.gameOver.SetActive(true);
+            Settings.ShowCursor();
+        }
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -83,5 +88,23 @@ public class MovePlayer : MonoBehaviour
         }
 
         rb.velocity = movement;
+        if (currentTime >= 0)
+        {
+            currentTime -= 1 * Time.deltaTime;
+        }
+        
+        Interface.Instance.time.text = ((int)currentTime).ToString();
+    }
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Finish")
+        {
+            Interface.Instance.menu.SetActive(true);
+            Interface.Instance.victory.SetActive(true);
+            Settings.ShowCursor();
+        }
     }
 }

@@ -22,7 +22,7 @@ public static class Settings
     public static int maxCountAmmo = 20;
     public static int maxPlayerHealth = 5;
     public static int maxCountEnemy;
-
+    public static int maxTime = 120;
     public static float speedRotationEnemy = 5f;
 
 
