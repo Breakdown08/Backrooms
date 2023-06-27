@@ -25,7 +25,6 @@ public static class Settings
     public static int maxTime = 120;
     public static float speedRotationEnemy = 5f;
 
-
     public static void ShowCursor()
     {
         Cursor.lockState = CursorLockMode.None;

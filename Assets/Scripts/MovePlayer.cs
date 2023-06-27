@@ -27,36 +27,41 @@ public class MovePlayer : MonoBehaviour
         currentTime = startingTime;
     }
     
+    bool isPause()
+    {
+        if (Time.timeScale == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void Update()
     {
-        Settings.positionPlayer = transform.position;
-
-        rotationX -= Input.GetAxis("Mouse Y") * Settings.sensitivityVert;
-        rotationX = Mathf.Clamp(rotationX, Settings.minVert, Settings.maxVert);
-        rotationY = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * Settings.sensitivityHor;
-        
-        //Поворачиваем игрока только вокруг оси Y
-        transform.localEulerAngles = new Vector3(0f, rotationY, 0f);
-        
-        //Камера - дочерний объект игрока, поэтому вращаем её только вокруг оси X
-        playerCamera.transform.localEulerAngles = new Vector3(rotationX, 0f, 0f);
-
-        if (!Interface.Instance.menu.activeSelf)
-        {
-            if ((Input.GetMouseButton(1) || Input.GetKey(KeyCode.Space)) && contactIsNormal)
-            {
-                contactIsNormal = false;
-                rb.AddForce(Vector3.up * Settings.forceJump, ForceMode.Impulse);
-            }
-        }
-
         if (currentTime <= 0)
         {
             Interface.Instance.menu.SetActive(true);
             Interface.Instance.gameOver.SetActive(true);
             Settings.ShowCursor();
         }
-        
+
+        if (!isPause())
+        {
+            Settings.positionPlayer = transform.position;
+
+            rotationX -= Input.GetAxis("Mouse Y") * Settings.sensitivityVert;
+            rotationX = Mathf.Clamp(rotationX, Settings.minVert, Settings.maxVert);
+            rotationY = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * Settings.sensitivityHor;
+            
+            //Поворачиваем игрока только вокруг оси Y
+            transform.localEulerAngles = new Vector3(0f, rotationY, 0f);
+            
+            //Камера - дочерний объект игрока, поэтому вращаем её только вокруг оси X
+            playerCamera.transform.localEulerAngles = new Vector3(rotationX, 0f, 0f);
+        }   
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -69,6 +74,15 @@ public class MovePlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!Interface.Instance.menu.activeSelf)
+        {
+            if ((Input.GetMouseButton(1) || Input.GetKey(KeyCode.Space)) && contactIsNormal)
+            {
+                contactIsNormal = false;
+                rb.AddForce(Vector3.up * Settings.forceJump, ForceMode.Impulse);
+            }
+        }
+
         Vector3 movement = new Vector3(0f, rb.velocity.y - 0.5f, 0f);
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
@@ -105,6 +119,7 @@ public class MovePlayer : MonoBehaviour
             Interface.Instance.menu.SetActive(true);
             Interface.Instance.victory.SetActive(true);
             Settings.ShowCursor();
+            Time.timeScale = 0;
         }
     }
 }
