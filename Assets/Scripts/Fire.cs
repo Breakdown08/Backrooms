@@ -32,11 +32,13 @@ public class Fire : MonoBehaviour
 
                 GameObject ammo = Instantiate(ammoPref, playerCamera.transform.position, Quaternion.identity) as GameObject;
                 ammo.GetComponent<Rigidbody>().AddForce(direction * speedAmmo, ForceMode.Impulse);
+                ammo.transform.SetParent(transform.Find("/Level"), false);
             }
             else
             {
                 GameObject ammo = Instantiate(ammoPref, playerCamera.transform.position, Quaternion.identity) as GameObject;
                 ammo.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * speedAmmo, ForceMode.Impulse);
+                ammo.transform.SetParent(transform.Find("/Level"), false);
             }
         }
     }

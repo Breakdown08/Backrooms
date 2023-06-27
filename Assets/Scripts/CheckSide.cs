@@ -91,25 +91,25 @@ public class CheckSide : MonoBehaviour
         //ищем углы
         if (Physics.Raycast(origin6, direction, out hit, len) == false && Physics.Raycast(origin1, direction, out hit, len) && Physics.Raycast(origin2, direction, out hit, len))
         {
-            Debug.Log("Есть угол справа вверху" + transform.position);
+            //Debug.Log("Есть угол справа вверху" + transform.position);
             GameObject pillar = Instantiate(Pillar, transform.position + new Vector3(2.5f, 0f, 2.5f), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             pillar.transform.SetParent(transform.Find(destPath), false);
         }
         if (Physics.Raycast(origin5, direction, out hit, len) == false && Physics.Raycast(origin1, direction, out hit, len) && Physics.Raycast(origin4, direction, out hit, len))
         {
-            Debug.Log("Есть угол слева вверху" + transform.position);
+            //Debug.Log("Есть угол слева вверху" + transform.position);
             GameObject pillar = Instantiate(Pillar, transform.position + new Vector3(-2.5f, 0f, 2.5f), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             pillar.transform.SetParent(transform.Find(destPath), false);
         }
         if (Physics.Raycast(origin8, direction, out hit, len) == false && Physics.Raycast(origin2, direction, out hit, len) && Physics.Raycast(origin3, direction, out hit, len))
         {
-            Debug.Log("Есть угол справа внизу" + transform.position);
+            //Debug.Log("Есть угол справа внизу" + transform.position);
             GameObject pillar = Instantiate(Pillar, transform.position + new Vector3(2.5f, 0f, -2.5f), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             pillar.transform.SetParent(transform.Find(destPath), false);
         }
         if (Physics.Raycast(origin7, direction, out hit, len) == false && Physics.Raycast(origin4, direction, out hit, len) && Physics.Raycast(origin3, direction, out hit, len))
         {
-            Debug.Log("Есть угол слева внизу" + transform.position);
+            //Debug.Log("Есть угол слева внизу" + transform.position);
             GameObject pillar = Instantiate(Pillar, transform.position + new Vector3(-2.5f, 0f, -2.5f), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             pillar.transform.SetParent(transform.Find(destPath), false);
         }
@@ -148,7 +148,6 @@ public class CheckSide : MonoBehaviour
         //RayDraw();
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Debug.Log("что-то тестировать");
         }
     }
 }

@@ -12,8 +12,6 @@ public class MovePlayer : MonoBehaviour
     private float rotationX, rotationY;
     private Rigidbody rb;
     private bool contactIsNormal = true;
-    float currentTime = 0f;
-    float startingTime = Settings.maxTime;
 
 
     private void Awake()
@@ -24,7 +22,7 @@ public class MovePlayer : MonoBehaviour
 
     void Start()
     {
-        currentTime = startingTime;
+        Settings.currentTime = Settings.maxTime;
     }
     
     bool isPause()
@@ -41,10 +39,14 @@ public class MovePlayer : MonoBehaviour
 
     void Update()
     {
-        if (currentTime <= 0)
+        if (Settings.currentTime <= 0)
         {
             Interface.Instance.menu.SetActive(true);
             Interface.Instance.gameOver.SetActive(true);
+            Interface.Instance.labelRestart.SetActive(true);
+            Interface.Instance.labelPlay.SetActive(false);
+            Interface.Instance.labelContinue.SetActive(false);
+            Time.timeScale = 0;
             Settings.ShowCursor();
         }
 
@@ -102,12 +104,12 @@ public class MovePlayer : MonoBehaviour
         }
 
         rb.velocity = movement;
-        if (currentTime >= 0)
+        if (Settings.currentTime >= 0)
         {
-            currentTime -= 1 * Time.deltaTime;
+            Settings.currentTime -= 1 * Time.deltaTime;
         }
         
-        Interface.Instance.time.text = ((int)currentTime).ToString();
+        Interface.Instance.time.text = ((int)Settings.currentTime).ToString();
     }
 
 
@@ -118,8 +120,11 @@ public class MovePlayer : MonoBehaviour
         {
             Interface.Instance.menu.SetActive(true);
             Interface.Instance.victory.SetActive(true);
-            Settings.ShowCursor();
+            Interface.Instance.labelRestart.SetActive(true);
+            Interface.Instance.labelPlay.SetActive(false);
+            Interface.Instance.labelContinue.SetActive(false);
             Time.timeScale = 0;
+            Settings.ShowCursor();
         }
     }
 }

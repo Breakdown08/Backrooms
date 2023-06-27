@@ -22,7 +22,8 @@ public static class Settings
     public static int maxCountAmmo = 20;
     public static int maxPlayerHealth = 5;
     public static int maxCountEnemy;
-    public static int maxTime = 120;
+    public static int maxTime = 100;
+    public static float currentTime = 0f;
     public static float speedRotationEnemy = 5f;
 
     public static void ShowCursor()
@@ -42,5 +43,7 @@ public static class Settings
         playerHealth = maxPlayerHealth;
         score = 0;
         maxCountEnemy = 0;
+        currentTime = maxTime;
+        countAmmo = maxCountAmmo;
     }
 }

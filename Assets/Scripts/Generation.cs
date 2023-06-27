@@ -17,6 +17,7 @@ public class Generation : MonoBehaviour
     public GameObject lamp_prefab;
     public GameObject end_prefab;
     public GameObject Level;
+    public GameObject Player;
     private const string destPathFloor = "/Level/Floor";
     private const string destPathCeiling = "/Level/Ceiling";
     public List<Coordinate> coordinates = new List<Coordinate>();
@@ -54,6 +55,11 @@ public class Generation : MonoBehaviour
         yield return new WaitForEndOfFrame();
         coordinates = new List<Coordinate>();
         Corridors.Generate();
+        GameObject objToSpawn;
+        objToSpawn = new GameObject("Ceiling");
+        objToSpawn.transform.SetParent(transform.Find("/Level"), false);
+        objToSpawn = new GameObject("Floor");
+        objToSpawn.transform.SetParent(transform.Find("/Level"), false);
         Build_area();
     }
 
@@ -160,8 +166,10 @@ public class Generation : MonoBehaviour
         }
     }
 
-    private void Re_build()
+    public void Re_build()
     {
+        Player.transform.position = new Vector3(0f, 1f, 0f);
+        Player.transform.eulerAngles = new Vector3(0f, 0f, 0f);
         ClearLog();
         int n = Level.transform.childCount;
         for (int i = 0; i < n; i++)
@@ -182,9 +190,9 @@ public class Generation : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Re_build();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+            //Re_build();
+        //}
     }
 }

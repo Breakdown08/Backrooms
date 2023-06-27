@@ -20,7 +20,7 @@ public class Interface : MonoBehaviour
     [Header("Интерфейс (играть)")] public GameObject labelPlay;
     [Header("Интерфейс (рестарт)")] public GameObject labelRestart;
     [Header("Интерфейс (вернуться в игру)")] public GameObject labelContinue;
-    bool firstStart = true;
+    public bool firstStart = true;
     private void Awake()
     {
         Instance = this;
@@ -29,23 +29,40 @@ public class Interface : MonoBehaviour
         Settings.ShowCursor();
     }
 
+    public void SwitchToGame()
+    {
+        menu.SetActive(!menu.activeSelf);
+        if (menu.activeSelf)
+        {
+            Time.timeScale = 0;
+            Settings.ShowCursor();
+            counter.SetActive(false);
+        }
+        else
+        {
+            Time.timeScale = 1;
+            Settings.HideCursor();
+            counter.SetActive(true);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !gameOver.activeSelf && firstStart == false)
         {
-            menu.SetActive(!menu.activeSelf);
-            if (menu.activeSelf)
-            {
-                Time.timeScale = 0;
-                Settings.ShowCursor();
-                counter.SetActive(false);
-            }
-            else
-            {
-                Time.timeScale = 1;
-                Settings.HideCursor();
-                counter.SetActive(true);
-            }
+            SwitchToGame();
         }
+    }
+
+
+    public void ResetGame()
+    {
+        Settings.ResetGame();
+        Generation.Instance.Re_build();
+        labelRestart.SetActive(false);
+        labelPlay.SetActive(false);
+        labelContinue.SetActive(true);
+        victory.SetActive(false);
+        gameOver.SetActive(false);
     }
 }
